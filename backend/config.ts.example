@@ -1,4 +1,11 @@
-let config = {}
+type Config = {
+	mongo: {
+		uri: string
+	}
+}
+
+
+let config = {} as Config
 
 config.mongo.uri =
 	'Your MongoDb connection URI'
