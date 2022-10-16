@@ -1,11 +1,11 @@
 import { model, Schema } from 'mongoose'
 
 const categoryModel = new Schema({
-	name: { type: String },
+	name: { type: String, required: true },
 	links: {
-		LA: { type: String },
-		TSM: { type: String },
-		SF: { type: String },
+		LA: { type: String, required: true },
+		TSM: { type: String, required: true },
+		SF: { type: String, required: true },
 	},
 })
 
