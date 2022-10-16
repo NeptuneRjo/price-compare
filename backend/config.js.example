@@ -1,0 +1,6 @@
+let config = {}
+
+config.mongo.uri =
+	'Your MongoDb connection URI'
+
+export default config
