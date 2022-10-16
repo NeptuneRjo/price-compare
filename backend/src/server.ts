@@ -1,3 +1,3 @@
 import express from 'express'
 
-import 'dotenv/config'
+import cfg from './config'
