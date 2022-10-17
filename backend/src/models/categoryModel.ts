@@ -1,4 +1,5 @@
 import { model, Schema, Document, Model } from 'mongoose'
+import Item from './itemModel'
 
 // Define the item that the model creates
 export interface CategoryDocument extends Document {
@@ -8,6 +9,7 @@ export interface CategoryDocument extends Document {
 		TSM: string
 		SF: string
 	}
+	items: typeof Item[]
 }
 
 // Define the model itself
@@ -27,6 +29,7 @@ const categoryModel: Schema = new Schema({
 		TSM: { type: String, required: true },
 		SF: { type: String, required: true },
 	},
+	items: { type: Array, required: true },
 })
 
 // Exists as a util function if ever needed
@@ -47,6 +50,7 @@ categoryModel.statics.addNewCat = async function (
 			TSM,
 			SF,
 		},
+		items: [],
 	})
 
 	return newCat
