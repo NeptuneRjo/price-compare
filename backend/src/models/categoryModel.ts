@@ -3,19 +3,21 @@ import { model, Schema, Document, Model } from 'mongoose'
 // Define the item that the model creates
 export interface CategoryDocument extends Document {
 	name: string
-	LAurl: string
-	TSMurl: string
-	SFurl: string
+	links: {
+		LA: string
+		TSM: string
+		SF: string
+	}
 }
 
 // Define the model itself
 export interface CategoryModel extends Model<CategoryDocument> {
 	addNewCat(
 		name: string,
-		LAurl: string,
-		TSMurl: string,
-		SFurl: string
-	): Promise<void>
+		LA: string,
+		TSM: string,
+		SF: string
+	): Promise<CategoryDocument>
 }
 
 const categoryModel: Schema = new Schema({
@@ -30,22 +32,24 @@ const categoryModel: Schema = new Schema({
 // Exists as a util function if ever needed
 categoryModel.statics.addNewCat = async function (
 	name: string,
-	LAurl: string,
-	TSMurl: string,
-	SFurl: string
-): Promise<void> {
+	LA: string,
+	TSM: string,
+	SF: string
+): Promise<CategoryDocument> {
 	const exists = await this.findOne({ name })
 
 	if (exists) throw Error('A category already exists with this name.')
 
-	const newCat = await this.create({
+	const newCat: CategoryDocument = await this.create({
 		name,
 		links: {
-			LA: LAurl,
-			TSM: TSMurl,
-			SF: SFurl,
+			LA,
+			TSM,
+			SF,
 		},
 	})
+
+	return newCat
 }
 
 const Category: CategoryModel = model<CategoryDocument, CategoryModel>(
