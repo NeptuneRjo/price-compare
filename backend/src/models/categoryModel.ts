@@ -1,6 +1,24 @@
-import { model, Schema } from 'mongoose'
+import { model, Schema, Document, Model } from 'mongoose'
 
-const categoryModel = new Schema({
+// Define the item that the model creates
+export interface CategoryDocument extends Document {
+	name: string
+	LAurl: string
+	TSMurl: string
+	SFurl: string
+}
+
+// Define the model itself
+export interface CategoryModel extends Model<CategoryDocument> {
+	addNewCat(
+		name: string,
+		LAurl: string,
+		TSMurl: string,
+		SFurl: string
+	): Promise<void>
+}
+
+const categoryModel: Schema = new Schema({
 	name: { type: String, required: true },
 	links: {
 		LA: { type: String, required: true },
@@ -15,7 +33,7 @@ categoryModel.statics.addNewCat = async function (
 	LAurl: string,
 	TSMurl: string,
 	SFurl: string
-) {
+): Promise<void> {
 	const exists = await this.findOne({ name })
 
 	if (exists) throw Error('A category already exists with this name.')
@@ -30,6 +48,9 @@ categoryModel.statics.addNewCat = async function (
 	})
 }
 
-const Category = model('Categorie', categoryModel)
+const Category: CategoryModel = model<CategoryDocument, CategoryModel>(
+	'Categorie',
+	categoryModel
+)
 
 export default Category
