@@ -2,19 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const itemModel = new mongoose_1.Schema({
-    name: { type: String },
+    name: { type: String, required: true },
     prices: {
         LA: {
-            price: { type: String },
-            ref: { type: String },
+            price: { type: String, required: true },
+            ref: { type: String, required: true },
         },
         TSM: {
-            price: { type: String },
-            ref: { type: String },
+            price: { type: String, required: true },
+            ref: { type: String, required: true },
         },
         SF: {
-            price: { type: String },
-            ref: { type: String },
+            price: { type: String, required: true },
+            ref: { type: String, required: true },
         },
     },
 });
