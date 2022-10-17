@@ -30,6 +30,8 @@ describe('Category Model', () => {
 		expect(links?.LA).toEqual(fakeCategoryPass.links.LA)
 		expect(links?.TSM).toEqual(fakeCategoryPass.links.TSM)
 		expect(links?.SF).toEqual(fakeCategoryPass.links.SF)
+
+		expect(links?.SF).not.toEqual(fakeCategoryPass.links.LA)
 	})
 
 	it('fails to create a new category with no content provided', async () => {
@@ -48,5 +50,18 @@ describe('Category Model', () => {
 		} catch (error) {
 			expect(error).not.toBeNull()
 		}
+	})
+
+	it('creates a new category with the static', async () => {
+		const { name, links } = fakeCategoryPass
+
+		const newCat = await Category.addNewCat(name, links.LA, links.TSM, links.SF)
+
+		expect(newCat.name).toEqual(name)
+		expect(newCat.links.LA).toEqual(links.LA)
+		expect(newCat.links.TSM).toEqual(links.TSM)
+		expect(newCat.links.SF).toEqual(links.SF)
+
+		expect(newCat.links.LA).not.toEqual(links.TSM)
 	})
 })
