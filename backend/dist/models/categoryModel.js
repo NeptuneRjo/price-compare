@@ -8,6 +8,7 @@ const categoryModel = new mongoose_1.Schema({
         TSM: { type: String, required: true },
         SF: { type: String, required: true },
     },
+    items: { type: Array, required: true },
 });
 // Exists as a util function if ever needed
 categoryModel.statics.addNewCat = async function (name, LA, TSM, SF) {
@@ -21,6 +22,7 @@ categoryModel.statics.addNewCat = async function (name, LA, TSM, SF) {
             TSM,
             SF,
         },
+        items: [],
     });
     return newCat;
 };
