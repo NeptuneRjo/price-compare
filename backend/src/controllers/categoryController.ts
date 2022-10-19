@@ -12,9 +12,7 @@ export const get_category = async (req: Request, res: Response) => {
 }
 
 export const create_category = async (req: Request, res: Response) => {
-	const { name, LA, TSM, SF } = req.body
-
-	const newCat = await Category.addNewCat(name, LA, TSM, SF)
+	const newCat = await Category.create(req.body)
 
 	res.status(200).json({ data: newCat })
 }
