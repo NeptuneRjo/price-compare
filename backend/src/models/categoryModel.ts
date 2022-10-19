@@ -37,18 +37,19 @@ categoryModel.statics.addNewCat = async function (
 	TSM: string,
 	SF: string
 ): Promise<CategoryDocument> {
-	const exists = await this.findOne({ name })
-
-	if (exists) throw Error('A category already exists with this name.')
-
-	const newCat: CategoryDocument = await this.create({
-		name,
-		links: {
-			LA,
-			TSM,
-			SF,
+	const newCat: CategoryDocument = await this.findOneAndUpdate(
+		{
+			name,
 		},
-	})
+		{
+			links: {
+				LA,
+				TSM,
+				SF,
+			},
+		},
+		{ setDefaultsOnInsert: true, upsert: true }
+	)
 
 	return newCat
 }
