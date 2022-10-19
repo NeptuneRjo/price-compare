@@ -21,7 +21,7 @@ type Item = {
 	}
 }
 
-export const scrapeLaItems = async (url: string, category: string) => {
+export const scrapeLaItems = async (url: string) => {
 	const browser = await puppeteer.launch()
 	const page = await browser.newPage()
 
@@ -101,7 +101,6 @@ export const scrapeLaItems = async (url: string, category: string) => {
 							ref: itemLinks[i],
 						},
 					},
-					category: category,
 				},
 			},
 			{
@@ -113,5 +112,41 @@ export const scrapeLaItems = async (url: string, category: string) => {
 		const itemObj = await Item.findOne({ name: item.name })
 
 		itemsArray.push(itemObj)
+	}
+}
+
+export const scrapeLaCats = async () => {
+	const browser = await puppeteer.launch()
+	const page = await browser.newPage()
+
+	await page.goto(`https://www.liveaquaria.com/category/15/marine-fish`)
+	await page.setViewport({
+		height: 5000,
+		width: 1920,
+	})
+
+	const catLinks = await page.$$eval(
+		'div.category-item a.cat-name.categorypage-ev-tracking',
+		(names) => {
+			const href = names.map((index) =>
+				(index as HTMLElement).getAttribute('href')
+			)
+
+			return href
+		}
+	)
+
+	for (let i = 0; i < catLinks.length; i++) {
+		if (i > 4) {
+			await Category.findOneAndUpdate(
+				{ name: 'LiveAquaria' },
+				{
+					$push: {
+						links: `https://www.liveaquaria.com${catLinks[i]}`,
+					},
+				},
+				{ setDefaultsOnInsert: true, upsert: true }
+			)
+		}
 	}
 }
