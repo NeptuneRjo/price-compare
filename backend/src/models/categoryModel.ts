@@ -2,18 +2,17 @@ import { model, Schema, Document, Model } from 'mongoose'
 import Item from './itemModel'
 
 // Define the item that the model creates
-export interface CategoryDocument extends Document {
+interface CategoryDocument extends Document {
 	name: string
 	links: {
 		LA: string
 		TSM: string
 		SF: string
 	}
-	items: typeof Item[]
 }
 
 // Define the model itself
-export interface CategoryModel extends Model<CategoryDocument> {
+interface CategoryModel extends Model<CategoryDocument> {
 	addNewCat(
 		name: string,
 		LA: string,
@@ -25,11 +24,10 @@ export interface CategoryModel extends Model<CategoryDocument> {
 const categoryModel: Schema = new Schema({
 	name: { type: String, required: true },
 	links: {
-		LA: { type: String, required: true },
-		TSM: { type: String, required: true },
-		SF: { type: String, required: true },
+		LA: { type: String, default: '', required: true },
+		TSM: { type: String, default: '', required: true },
+		SF: { type: String, default: '', required: true },
 	},
-	items: { type: Array, required: true },
 })
 
 // Exists as a util function if ever needed
@@ -50,7 +48,6 @@ categoryModel.statics.addNewCat = async function (
 			TSM,
 			SF,
 		},
-		items: [],
 	})
 
 	return newCat
