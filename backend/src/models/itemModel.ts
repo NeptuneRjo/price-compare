@@ -16,7 +16,6 @@ const itemModel = new Schema({
 			ref: { type: String, default: '' },
 		},
 	},
-	category: { type: String, default: '' },
 })
 
 const Item = model('Item', itemModel)
