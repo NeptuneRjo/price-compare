@@ -96,9 +96,9 @@ export const scrapeSfItems = async (url: string) => {
 			{
 				$push: {
 					prices: {
-						LA: {
+						SF: {
 							price: itemPrices[i],
-							ref: itemLinks[i],
+							ref: `https://www.saltwaterfish.com${itemLinks[i]}`,
 						},
 					},
 				},
