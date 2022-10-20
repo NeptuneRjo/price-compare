@@ -1,23 +1,18 @@
 import { Request, Response } from 'express'
-import { Category } from '../models'
+import { Category, Item } from '../models'
 
 export const get_category = async (req: Request, res: Response) => {
-	const name = req.params
-	const category = await Category.findOne({ name })
+	const items = await Item.find({ category: req.params })
 
-	if (!category) {
-		return res.status(404).json({ error: 'No category found with that name' })
+	if (!items) {
+		return res.status(204).json({ data: items })
 	}
 
-	res.status(200).json({ data: category })
+	res.status(200).json({ data: items })
 }
 
-export const get_all_categories = async (req: Request, res: Response) => {
-	const categories = await Category.find({})
+export const create_category = async (req: Request, res: Response) => {
+	const newCat = await Category.create(req.body)
 
-	if (!categories) {
-		return res.status(204).json({ data: categories })
-	}
-
-	res.status(200).json({ data: categories })
+	res.status(200).json({ data: newCat })
 }

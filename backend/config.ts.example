@@ -1,13 +1,10 @@
-type Config = {
+* Create in /src folder *
+
+
+const config = {
 	mongo: {
-		uri: string
+		uri: 'Your MongoDb connection URI'
 	}
 }
-
-
-let config = {} as Config
-
-config.mongo.uri =
-	'Your MongoDb connection URI'
 
 export default config

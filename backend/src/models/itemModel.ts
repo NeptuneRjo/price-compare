@@ -1,19 +1,19 @@
 import { Schema, model } from 'mongoose'
 
 const itemModel = new Schema({
-	name: { type: String, required: true },
+	name: { type: String },
 	prices: {
 		LA: {
-			price: { type: String, required: true },
-			ref: { type: String, required: true },
+			price: { type: String, default: '' },
+			ref: { type: String, default: '' },
 		},
 		TSM: {
-			price: { type: String, required: true },
-			ref: { type: String, required: true },
+			price: { type: String, default: '' },
+			ref: { type: String, default: '' },
 		},
 		SF: {
-			price: { type: String, required: true },
-			ref: { type: String, required: true },
+			price: { type: String, default: '' },
+			ref: { type: String, default: '' },
 		},
 	},
 })

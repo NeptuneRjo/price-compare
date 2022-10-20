@@ -1,21 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_all_categories = exports.get_category = void 0;
+exports.create_category = exports.get_category = void 0;
 const models_1 = require("../models");
 const get_category = async (req, res) => {
-    const name = req.params;
-    const category = await models_1.Category.findOne({ name });
-    if (!category) {
-        return res.status(404).json({ error: 'No category found with that name' });
+    const items = await models_1.Item.find({ category: req.params });
+    if (!items) {
+        return res.status(204).json({ data: items });
     }
-    res.status(200).json({ data: category });
+    res.status(200).json({ data: items });
 };
 exports.get_category = get_category;
-const get_all_categories = async (req, res) => {
-    const categories = await models_1.Category.find({});
-    if (!categories) {
-        return res.status(204).json({ data: categories });
-    }
-    res.status(200).json({ data: categories });
+const create_category = async (req, res) => {
+    const newCat = await models_1.Category.create(req.body);
+    res.status(200).json({ data: newCat });
 };
-exports.get_all_categories = get_all_categories;
+exports.create_category = create_category;
