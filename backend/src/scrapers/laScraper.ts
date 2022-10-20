@@ -1,6 +1,5 @@
 import puppeteer from 'puppeteer'
 import Category from '../models/categoryModel'
-import fs from 'fs/promises'
 import { Item } from '../models'
 
 type Item = {
@@ -78,28 +77,14 @@ export const scrapeLaItems = async (url: string) => {
 		}
 	)
 
-	const itemsArray = []
-
 	for (let i = 0; i < itemNames.length; i++) {
-		const item = {
-			name: itemNames[i],
-			prices: {
-				LA: {
-					price: itemPrices[i],
-					ref: itemLinks[i],
-				},
-			},
-		}
-
 		await Item.findOneAndUpdate(
-			{ name: item.name },
+			{ name: itemNames[i] },
 			{
-				$push: {
-					prices: {
-						LA: {
-							price: itemPrices[i],
-							ref: itemLinks[i],
-						},
+				prices: {
+					LA: {
+						price: itemPrices[i],
+						ref: `https://www.liveaquaria.com${itemLinks[i]}`,
 					},
 				},
 			},
@@ -108,11 +93,9 @@ export const scrapeLaItems = async (url: string) => {
 				upsert: true,
 			}
 		)
-
-		const itemObj = await Item.findOne({ name: item.name })
-
-		itemsArray.push(itemObj)
 	}
+
+	return
 }
 
 export const scrapeLaCats = async () => {
