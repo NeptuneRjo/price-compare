@@ -3,14 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.scrapeLaCats = exports.scrapeLaItems = void 0;
+exports.scrapeSfCats = exports.scrapeSfItems = void 0;
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const categoryModel_1 = __importDefault(require("../models/categoryModel"));
 const models_1 = require("../models");
-const scrapeLaItems = async (url) => {
+const scrapeSfItems = async (url) => {
     const browser = await puppeteer_1.default.launch();
     const page = await browser.newPage();
-    await page.goto(`${url}&start=1&count=200`);
+    await page.goto(`${url}?rp=200`);
     await page.setViewport({
         height: 5000,
         width: 1920,
@@ -39,42 +39,53 @@ const scrapeLaItems = async (url) => {
         const href = links.map((index) => index.getAttribute('href'));
         return href;
     });
+    const itemsArray = [];
     for (let i = 0; i < itemNames.length; i++) {
-        await models_1.Item.findOneAndUpdate({ name: itemNames[i] }, {
+        const item = {
+            name: itemNames[i],
             prices: {
                 LA: {
                     price: itemPrices[i],
-                    ref: `https://www.liveaquaria.com${itemLinks[i]}`,
+                    ref: itemLinks[i],
+                },
+            },
+        };
+        await models_1.Item.findOneAndUpdate({ name: item.name }, {
+            $push: {
+                prices: {
+                    SF: {
+                        price: itemPrices[i],
+                        ref: `https://www.saltwaterfish.com${itemLinks[i]}`,
+                    },
                 },
             },
         }, {
             setDefaultsOnInsert: true,
             upsert: true,
         });
+        const itemObj = await models_1.Item.findOne({ name: item.name });
+        itemsArray.push(itemObj);
     }
-    return;
 };
-exports.scrapeLaItems = scrapeLaItems;
-const scrapeLaCats = async () => {
+exports.scrapeSfItems = scrapeSfItems;
+const scrapeSfCats = async () => {
     const browser = await puppeteer_1.default.launch();
     const page = await browser.newPage();
-    await page.goto(`https://www.liveaquaria.com/category/15/marine-fish`);
+    await page.goto(`https://www.saltwaterfish.com/categorylist-saltwater-fish`);
     await page.setViewport({
         height: 5000,
         width: 1920,
     });
-    const catLinks = await page.$$eval('div.category-item a.cat-name.categorypage-ev-tracking', (names) => {
+    const catLinks = await page.$$eval('html body div#canvas main.listing-page.category-listing-page section.py-5 div.container div.row div.col-6.col-sm-4.col-md-3 div.card.mb-3.border-0.listing-item div.card-body.p-0 a', (names) => {
         const href = names.map((index) => index.getAttribute('href'));
         return href;
     });
     for (let i = 0; i < catLinks.length; i++) {
-        if (i > 4) {
-            await categoryModel_1.default.findOneAndUpdate({ name: 'LiveAquaria' }, {
-                $push: {
-                    links: `https://www.liveaquaria.com${catLinks[i]}`,
-                },
-            }, { setDefaultsOnInsert: true, upsert: true });
-        }
+        await categoryModel_1.default.findOneAndUpdate({ name: 'SaltwaterFish' }, {
+            $push: {
+                links: `https://www.saltwaterfish.com${catLinks[i]}`,
+            },
+        }, { setDefaultsOnInsert: true, upsert: true });
     }
 };
-exports.scrapeLaCats = scrapeLaCats;
+exports.scrapeSfCats = scrapeSfCats;
