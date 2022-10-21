@@ -8,6 +8,7 @@ const puppeteer_1 = __importDefault(require("puppeteer"));
 const categoryModel_1 = __importDefault(require("../models/categoryModel"));
 const models_1 = require("../models");
 const scrapeSfItems = async (url) => {
+    var _a;
     const browser = await puppeteer_1.default.launch();
     const page = await browser.newPage();
     await page.goto(`${url}?rp=200`);
@@ -15,57 +16,64 @@ const scrapeSfItems = async (url) => {
         height: 5000,
         width: 1920,
     });
-    const itemNames = await page.$$eval('div.category-list div.category-item a.cat-name', (names) => {
+    const itemNames = await page.$$eval('h3.listing-item-title a.text-white', (names) => {
         const innerText = names.map((index) => index.innerText);
         let cleansedArray = [];
         for (let text of innerText) {
             const removeApost = text.replace(/[']/g, '');
-            const removeDash = removeApost.replace(/[-]/g, ' ');
-            const cleansedText = removeDash.replace('EXPERT ONLY', '');
-            cleansedArray.push(cleansedText);
+            const removeDash = removeApost.replace('-', ' ');
+            const removeColon = removeDash.split(':');
+            const removeDouble = removeColon[0].split(/  +/g);
+            cleansedArray.push(removeDouble[0]);
         }
         return cleansedArray;
     });
-    const itemPrices = await page.$$eval('div.category-list div.category-item div.cat-price', (prices) => {
+    const itemPrices = await page.$$eval('h5.listing-item-price a', (prices) => {
         const innerText = prices.map((index) => index.innerText);
         let splitArray = [];
         for (let text of innerText) {
-            const splitText = text.split(' ');
+            const removeText = text.replace('Sale: ', '');
+            const splitText = removeText.split(' ');
             splitArray.push(splitText[2]);
         }
         return splitArray;
     });
-    const itemLinks = await page.$$eval('div.category-list div.category-item a.cat-name', (links) => {
+    const itemLinks = await page.$$eval('h3.listing-item-title a.text-white', (links) => {
         const href = links.map((index) => index.getAttribute('href'));
         return href;
     });
-    const itemsArray = [];
     for (let i = 0; i < itemNames.length; i++) {
-        const item = {
-            name: itemNames[i],
-            prices: {
-                LA: {
-                    price: itemPrices[i],
-                    ref: itemLinks[i],
-                },
-            },
-        };
-        await models_1.Item.findOneAndUpdate({ name: item.name }, {
-            $push: {
+        const item = await models_1.Item.findOne({ name: itemNames[i] });
+        if (!item) {
+            await models_1.Item.create({
+                name: itemNames[i],
                 prices: {
                     SF: {
                         price: itemPrices[i],
                         ref: `https://www.saltwaterfish.com${itemLinks[i]}`,
                     },
+                    LA: {
+                        price: ' ',
+                        ref: ' ',
+                    },
                 },
-            },
-        }, {
-            setDefaultsOnInsert: true,
-            upsert: true,
-        });
-        const itemObj = await models_1.Item.findOne({ name: item.name });
-        itemsArray.push(itemObj);
+            });
+        }
+        else {
+            await models_1.Item.findOneAndUpdate({ name: itemNames[i] }, {
+                prices: {
+                    LA: (_a = item === null || item === void 0 ? void 0 : item.prices) === null || _a === void 0 ? void 0 : _a.LA,
+                    SF: {
+                        price: itemPrices[i],
+                        ref: `https://www.saltwaterfish.com${itemLinks[i]}`,
+                    },
+                },
+            }, {
+                upsert: true,
+            });
+        }
     }
+    return;
 };
 exports.scrapeSfItems = scrapeSfItems;
 const scrapeSfCats = async () => {
