@@ -2,8 +2,6 @@ import express from 'express'
 import mongoose from 'mongoose'
 import { itemRoutes } from './routes'
 import cfg from './config'
-import { scrapeLaCats } from './scrapers/laScraper'
-import { scrapeSfCats } from './scrapers/sfScraper'
 import { scrapeItems } from './scrapers/scraperUtils'
 import cron from 'node-cron'
 
