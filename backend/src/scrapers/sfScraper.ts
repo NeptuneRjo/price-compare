@@ -40,10 +40,11 @@ export const scrapeSfItems = async (url: string) => {
 
 			for (let text of innerText) {
 				const removeApost = text.replace(/[']/g, '')
-				const removeDash = removeApost.replace(/[-]/g, ' ')
-				const cleansedText = removeDash.replace('EXPERT ONLY', '')
+				const removeDash = removeApost.replace('-', ' ')
+				const removeColon = removeDash.split(':')
+				const removeDouble = removeColon[0].split(/  +/g)
 
-				cleansedArray.push(cleansedText)
+				cleansedArray.push(removeDouble[0])
 			}
 
 			return cleansedArray
@@ -56,7 +57,7 @@ export const scrapeSfItems = async (url: string) => {
 		let splitArray = []
 
 		for (let text of innerText) {
-			const removeText = text.replace('Sale:', '')
+			const removeText = text.replace('Sale: ', '')
 			const splitText = removeText.split(' ')
 
 			splitArray.push(splitText[2])
