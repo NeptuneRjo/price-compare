@@ -78,21 +78,39 @@ export const scrapeLaItems = async (url: string) => {
 	)
 
 	for (let i = 0; i < itemNames.length; i++) {
-		await Item.findOneAndUpdate(
-			{ name: itemNames[i] },
-			{
+		const item = await Item.findOne({ name: itemNames[i] })
+
+		if (!item) {
+			await Item.create({
+				name: itemNames[i],
 				prices: {
+					SF: {
+						price: ' ',
+						ref: ' ',
+					},
 					LA: {
 						price: itemPrices[i],
 						ref: `https://www.liveaquaria.com${itemLinks[i]}`,
 					},
 				},
-			},
-			{
-				setDefaultsOnInsert: true,
-				upsert: true,
-			}
-		)
+			})
+		} else {
+			await Item.findOneAndUpdate(
+				{ name: itemNames[i] },
+				{
+					prices: {
+						SF: item?.prices?.SF,
+						LA: {
+							price: itemPrices[i],
+							ref: `https://www.liveaquaria.com${itemLinks[i]}`,
+						},
+					},
+				},
+				{
+					upsert: true,
+				}
+			)
+		}
 	}
 
 	return

@@ -32,7 +32,7 @@ export const scrapeSfItems = async (url: string) => {
 	})
 
 	const itemNames = await page.$$eval(
-		'div.category-list div.category-item a.cat-name',
+		'h3.listing-item-title a.text-white',
 		(names) => {
 			const innerText = names.map((index) => (index as HTMLElement).innerText)
 
@@ -50,25 +50,23 @@ export const scrapeSfItems = async (url: string) => {
 		}
 	)
 
-	const itemPrices = await page.$$eval(
-		'div.category-list div.category-item div.cat-price',
-		(prices) => {
-			const innerText = prices.map((index) => (index as HTMLElement).innerText)
+	const itemPrices = await page.$$eval('h5.listing-item-price a', (prices) => {
+		const innerText = prices.map((index) => (index as HTMLElement).innerText)
 
-			let splitArray = []
+		let splitArray = []
 
-			for (let text of innerText) {
-				const splitText = text.split(' ')
+		for (let text of innerText) {
+			const removeText = text.replace('Sale:', '')
+			const splitText = removeText.split(' ')
 
-				splitArray.push(splitText[2])
-			}
-
-			return splitArray
+			splitArray.push(splitText[2])
 		}
-	)
+
+		return splitArray
+	})
 
 	const itemLinks = await page.$$eval(
-		'div.category-list div.category-item a.cat-name',
+		'h3.listing-item-title a.text-white',
 		(links) => {
 			const href = links.map((index) =>
 				(index as HTMLElement).getAttribute('href')
@@ -78,41 +76,43 @@ export const scrapeSfItems = async (url: string) => {
 		}
 	)
 
-	const itemsArray = []
-
 	for (let i = 0; i < itemNames.length; i++) {
-		const item = {
-			name: itemNames[i],
-			prices: {
-				LA: {
-					price: itemPrices[i],
-					ref: itemLinks[i],
-				},
-			},
-		}
+		const item = await Item.findOne({ name: itemNames[i] })
 
-		await Item.findOneAndUpdate(
-			{ name: item.name },
-			{
-				$push: {
+		if (!item) {
+			await Item.create({
+				name: itemNames[i],
+				prices: {
+					SF: {
+						price: itemPrices[i],
+						ref: `https://www.saltwaterfish.com${itemLinks[i]}`,
+					},
+					LA: {
+						price: ' ',
+						ref: ' ',
+					},
+				},
+			})
+		} else {
+			await Item.findOneAndUpdate(
+				{ name: itemNames[i] },
+				{
 					prices: {
+						LA: item?.prices?.LA,
 						SF: {
 							price: itemPrices[i],
 							ref: `https://www.saltwaterfish.com${itemLinks[i]}`,
 						},
 					},
 				},
-			},
-			{
-				setDefaultsOnInsert: true,
-				upsert: true,
-			}
-		)
-
-		const itemObj = await Item.findOne({ name: item.name })
-
-		itemsArray.push(itemObj)
+				{
+					upsert: true,
+				}
+			)
+		}
 	}
+
+	return
 }
 
 export const scrapeSfCats = async () => {
