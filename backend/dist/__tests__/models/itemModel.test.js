@@ -20,7 +20,6 @@ describe('Item Model', () => {
         expect(_id).toBeDefined();
         expect(name).toEqual(fixtures_1.fakeItemPass.name);
         expect(prices === null || prices === void 0 ? void 0 : prices.LA).toEqual(fixtures_1.fakeItemPass.prices.LA);
-        expect(prices === null || prices === void 0 ? void 0 : prices.TSM).toEqual(fixtures_1.fakeItemPass.prices.TSM);
         expect(prices === null || prices === void 0 ? void 0 : prices.SF).toEqual(fixtures_1.fakeItemPass.prices.SF);
         expect(prices === null || prices === void 0 ? void 0 : prices.SF).not.toEqual(fixtures_1.fakeItemPass.prices.LA);
     });

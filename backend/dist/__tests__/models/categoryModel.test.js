@@ -19,10 +19,7 @@ describe('Category Model', () => {
         const { _id, name, links } = newCategory;
         expect(_id).toBeDefined();
         expect(name).toEqual(fixtures_1.fakeCategoryPass.name);
-        expect(links === null || links === void 0 ? void 0 : links.LA).toEqual(fixtures_1.fakeCategoryPass.links.LA);
-        expect(links === null || links === void 0 ? void 0 : links.TSM).toEqual(fixtures_1.fakeCategoryPass.links.TSM);
-        expect(links === null || links === void 0 ? void 0 : links.SF).toEqual(fixtures_1.fakeCategoryPass.links.SF);
-        expect(links === null || links === void 0 ? void 0 : links.SF).not.toEqual(fixtures_1.fakeCategoryPass.links.LA);
+        expect(links).toEqual(fixtures_1.fakeCategoryPass.links);
     });
     it('fails to create a new category with no content provided', async () => {
         try {
@@ -41,14 +38,5 @@ describe('Category Model', () => {
         catch (error) {
             expect(error).not.toBeNull();
         }
-    });
-    it('creates a new category with the static', async () => {
-        const { name, links } = fixtures_1.fakeCategoryPass;
-        const newCat = await models_1.Category.addNewCat(name, links.LA, links.TSM, links.SF);
-        expect(newCat.name).toEqual(name);
-        expect(newCat.links.LA).toEqual(links.LA);
-        expect(newCat.links.TSM).toEqual(links.TSM);
-        expect(newCat.links.SF).toEqual(links.SF);
-        expect(newCat.links.LA).not.toEqual(links.TSM);
     });
 });

@@ -3,18 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.fakeItemFail = exports.fakeItemPass = exports.fakeCategoryFail = exports.fakeCategoryPass = void 0;
 exports.fakeCategoryPass = {
     name: 'Fish',
-    links: {
-        LA: 'https://google.com',
-        TSM: 'https://example.com',
-        SF: 'https://mozilla.com',
-    },
+    links: ['https://google.com'],
 };
 exports.fakeCategoryFail = {
     name: 1,
-    links: {
-        LA: 'https://google.com',
-        TSM: 'https://google.com',
-    },
+    links: ['https://google.com'],
 };
 exports.fakeItemPass = {
     name: 'Fish',
