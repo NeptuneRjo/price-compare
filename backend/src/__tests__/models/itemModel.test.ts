@@ -28,7 +28,6 @@ describe('Item Model', () => {
 		expect(_id).toBeDefined()
 		expect(name).toEqual(fakeItemPass.name)
 		expect(prices?.LA).toEqual(fakeItemPass.prices.LA)
-		expect(prices?.TSM).toEqual(fakeItemPass.prices.TSM)
 		expect(prices?.SF).toEqual(fakeItemPass.prices.SF)
 
 		expect(prices?.SF).not.toEqual(fakeItemPass.prices.LA)
