@@ -1,1 +1,1 @@
-export { default as categoryRoutes } from './categoryRoutes'
+export { default as itemRoutes } from './itemRoutes'

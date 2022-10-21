@@ -1,10 +1,9 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import { categoryRoutes } from './routes'
+import { itemRoutes } from './routes'
 import cfg from './config'
-import { scrapeLaItems } from './scrapers/laScraper'
-import { scrapeSfItems } from './scrapers/sfScraper'
-import { Category } from './models'
+import { scrapeLaCats } from './scrapers/laScraper'
+import { scrapeSfCats } from './scrapers/sfScraper'
 import { scrapeItems } from './scrapers/scraperUtils'
 import cron from 'node-cron'
 
@@ -18,7 +17,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 /* Routes */
-app.use('/api/categories', categoryRoutes)
+app.use('/api', itemRoutes)
 
 /* Util */
 process.setMaxListeners(0)
@@ -28,7 +27,18 @@ cron.schedule('0 12 * * 3', async () => {
 	await scrapeItems()
 })
 
-// Run to setup db with items
+/* 
+	Run these functions to populate the db with Categories and Items
+
+	IN THIS ORDER:
+	1. scrapeLaCats()
+	2. scrapeSfCats()
+	3. scrapeItems()
+
+*/
+
+// scrapeLaCats()
+// scrapeSfCats()
 // scrapeItems()
 
 /* Server */

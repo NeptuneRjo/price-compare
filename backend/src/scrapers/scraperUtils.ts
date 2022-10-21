@@ -9,19 +9,20 @@ export const scrapeItems = async () => {
 	const sfCat = await Category.findOne({ name: 'SaltwaterFish' })
 	const sfCatLinks = sfCat?.links
 
-	let i = 0
+	for (let link of laCatLinks) {
+		await scrapeLaItems(link)
+	}
 
-	setInterval(async () => {
-		if (i < laCatLinks.length) {
-			await scrapeLaItems(laCatLinks[i])
-			i++
-		}
-	}, 20000)
+	for (let link of sfCatLinks) {
+		await scrapeSfItems(link)
+	}
 
-	setInterval(async () => {
-		if (i < sfCatLinks.length) {
-			await scrapeSfItems(sfCatLinks[i])
-			i++
-		}
-	}, 20000)
+	// setInterval(async () => {
+	// 	if (i < sfCatLinks.length) {
+	// 		await scrapeSfItems(sfCatLinks[i])
+	// 		i++
+	// 	} else {
+	// 		clearInterval()
+	// 	}
+	// }, 20000)
 }

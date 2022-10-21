@@ -1,1 +1,1 @@
-export { get_category, create_category } from './categoryController'
+export { get_items } from './itemController'

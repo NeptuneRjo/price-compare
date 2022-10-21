@@ -5,16 +5,12 @@ const itemModel = new mongoose_1.Schema({
     name: { type: String },
     prices: {
         LA: {
-            price: { type: String, default: '' },
-            ref: { type: String, default: '' },
-        },
-        TSM: {
-            price: { type: String, default: '' },
-            ref: { type: String, default: '' },
+            price: { type: String, required: true },
+            ref: { type: String, required: true },
         },
         SF: {
-            price: { type: String, default: '' },
-            ref: { type: String, default: '' },
+            price: { type: String, required: true },
+            ref: { type: String, required: true },
         },
     },
 });
