@@ -1,6 +1,5 @@
 import React from 'react'
 import { ItemInterface } from '../types'
-import { Button } from 'react-bootstrap'
 
 type Props = {
 	item: ItemInterface
@@ -10,36 +9,46 @@ const Item: React.FC<Props> = ({ item }: Props) => {
 	const { name, prices } = item
 
 	return (
-		<tr>
-			<td>
-				<p>{name}</p>
+		<tr className='w-100' id='item'>
+			<td className='w-50'>
+				<h5>{name}</h5>
 			</td>
-			{prices.LA.price.length > 1 ? (
-				<td>
-					<div>{prices.LA.price}</div>
-					<Button href={prices.LA.ref} target='_blank'>
-						LiveAquaria
-					</Button>
-				</td>
-			) : (
-				<td>
-					<div>$-.--</div>
-					<Button disabled>LiveAquaria</Button>
-				</td>
-			)}
-			{prices.SF.price.length > 1 ? (
-				<td>
-					<div>{prices.SF.price}</div>
-					<Button href={prices.SF.ref} target='_blank'>
-						SaltwaterFish
-					</Button>
-				</td>
-			) : (
-				<td>
-					<div>$-.--</div>
-					<Button disabled>SaltwaterFish</Button>
-				</td>
-			)}
+			<td className='d-flex' id='item-links'>
+				{prices.LA.price.length > 1 ? (
+					<td className='d-flex w-50'>
+						<a
+							className='a-enabled text-decoration-none'
+							href={prices.LA.ref}
+							target='_blank'
+						>
+							{prices.LA.price} on LiveAquaria
+						</a>
+					</td>
+				) : (
+					<td className='d-flex w-50  text-secondary'>
+						<a className='a-disabled text-decoration-none'>
+							$--.-- on LiveAquaria
+						</a>
+					</td>
+				)}
+				{prices.SF.price.length > 1 ? (
+					<td className='d-flex w-50'>
+						<a
+							className='a-enabled text-decoration-none'
+							href={prices.SF.ref}
+							target='_blank'
+						>
+							{prices.SF.price} on SaltwaterFish
+						</a>
+					</td>
+				) : (
+					<td className='d-flex w-50'>
+						<a className='a-disabled  text-secondary text-decoration-none'>
+							$--.-- on SaltwaterFish
+						</a>
+					</td>
+				)}
+			</td>
 		</tr>
 	)
 }
