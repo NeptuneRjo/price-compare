@@ -7,6 +7,7 @@ import cron from 'node-cron'
 import cors from 'cors'
 
 import './config/mongoServer'
+import 'dotenv/config'
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -51,7 +52,7 @@ cron.schedule('0 12 * * 3', async () => {
 // scrapeItems()
 
 /* Server */
-mongoose.connect(cfg.mongo.uri).then(() => {
+mongoose.connect(process.env.MONGO_URI as string).then(() => {
 	app.listen(port, () => {
 		console.log('Connected to database and listening on port', port)
 	})

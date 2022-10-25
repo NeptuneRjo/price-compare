@@ -6,11 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const routes_1 = require("./routes");
-const config_1 = __importDefault(require("./config"));
 const scraperUtils_1 = require("./scrapers/scraperUtils");
 const node_cron_1 = __importDefault(require("node-cron"));
 const cors_1 = __importDefault(require("cors"));
 require("./config/mongoServer");
+require("dotenv/config");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;
 /* Middleware */
@@ -44,7 +44,7 @@ node_cron_1.default.schedule('0 12 * * 3', async () => {
 // scrapeSfCats()
 // scrapeItems()
 /* Server */
-mongoose_1.default.connect(config_1.default.mongo.uri).then(() => {
+mongoose_1.default.connect(process.env.MONGO_URI).then(() => {
     app.listen(port, () => {
         console.log('Connected to database and listening on port', port);
     });
