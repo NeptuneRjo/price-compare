@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/price-compare/static/css/main.b1838d10.css",
+    "main.js": "/price-compare/static/js/main.af045979.js",
+    "index.html": "/price-compare/index.html",
+    "main.b1838d10.css.map": "/price-compare/static/css/main.b1838d10.css.map",
+    "main.af045979.js.map": "/price-compare/static/js/main.af045979.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b1838d10.css",
+    "static/js/main.af045979.js"
+  ]
+}
