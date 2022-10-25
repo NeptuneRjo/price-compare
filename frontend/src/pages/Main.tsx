@@ -101,7 +101,7 @@ const Main = () => {
 			<div id='main-content' className='w-100 p-3'>
 				<div
 					id='main-items'
-					className='d-flex justify-content-center align-items-start min-vh-100'
+					className='d-flex justify-content-center align-items-center min-vh-100'
 				>
 					{!loading ? (
 						<Table
