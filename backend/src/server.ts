@@ -4,6 +4,7 @@ import { itemRoutes } from './routes'
 import cfg from './config'
 import { scrapeItems } from './scrapers/scraperUtils'
 import cron from 'node-cron'
+import cors from 'cors'
 
 import './config/mongoServer'
 
@@ -11,6 +12,13 @@ const app = express()
 const port = process.env.PORT || 4000
 
 /* Middleware */
+app.use(
+	cors({
+		credentials: true,
+		origin: ['http://localhost:3000'],
+	})
+)
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
