@@ -16,7 +16,10 @@ const port = process.env.PORT || 4000;
 /* Middleware */
 app.use((0, cors_1.default)({
     credentials: true,
-    origin: ['http://localhost:3000'],
+    origin: [
+        'http://localhost:3000',
+        'https://neptunerjo.github.io/price-compare',
+    ],
 }));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
