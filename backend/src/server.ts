@@ -17,6 +17,7 @@ app.use(
 		origin: [
 			'http://localhost:3000',
 			'https://neptunerjo.github.io/price-compare',
+			'https://neptunerjo.github.io',
 		],
 	})
 )

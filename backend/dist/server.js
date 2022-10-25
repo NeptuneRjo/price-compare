@@ -18,6 +18,7 @@ app.use((0, cors_1.default)({
     origin: [
         'http://localhost:3000',
         'https://neptunerjo.github.io/price-compare',
+        'https://neptunerjo.github.io',
     ],
 }));
 app.use(express_1.default.json());
