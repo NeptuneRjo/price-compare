@@ -9,7 +9,6 @@ const routes_1 = require("./routes");
 const scraperUtils_1 = require("./scrapers/scraperUtils");
 const node_cron_1 = __importDefault(require("node-cron"));
 const cors_1 = __importDefault(require("cors"));
-require("./config/mongoServer");
 require("dotenv/config");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;

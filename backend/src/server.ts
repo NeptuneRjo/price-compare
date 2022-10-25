@@ -5,7 +5,6 @@ import { scrapeItems } from './scrapers/scraperUtils'
 import cron from 'node-cron'
 import cors from 'cors'
 
-import './config/mongoServer'
 import 'dotenv/config'
 
 const app = express()
