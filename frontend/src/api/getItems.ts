@@ -1,6 +1,6 @@
 export const getItems = async () => {
 	const response = await fetch(`https://price-compare.onrender.com/api/items`, {
-		credentials: 'include',
+		credentials: 'same-origin',
 	})
 	const json = await response.json()
 
