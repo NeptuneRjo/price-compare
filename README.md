@@ -24,7 +24,7 @@ Backend:
 
 Frontend:
 
-- The frontend is alos tested by running `npm test`
+- The frontend is also tested by running `npm test`
 
 ## Reflection
 
