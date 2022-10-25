@@ -9,10 +9,15 @@ const routes_1 = require("./routes");
 const config_1 = __importDefault(require("./config"));
 const scraperUtils_1 = require("./scrapers/scraperUtils");
 const node_cron_1 = __importDefault(require("node-cron"));
+const cors_1 = __importDefault(require("cors"));
 require("./config/mongoServer");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;
 /* Middleware */
+app.use((0, cors_1.default)({
+    credentials: true,
+    origin: ['http://localhost:3000'],
+}));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 /* Routes */
