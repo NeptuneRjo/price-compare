@@ -1,5 +1,5 @@
 export const getItems = async () => {
-	const response = await fetch(`${process.env.REACT_APP_API_URL}/api/items`)
+	const response = await fetch(`https://price-compare.onrender.com/api/items`)
 	const json = await response.json()
 
 	if (response.status !== 204) {
