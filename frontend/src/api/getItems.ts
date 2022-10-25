@@ -1,5 +1,7 @@
 export const getItems = async () => {
-	const response = await fetch(`https://price-compare.onrender.com/api/items`)
+	const response = await fetch(`https://price-compare.onrender.com/api/items`, {
+		credentials: 'include',
+	})
 	const json = await response.json()
 
 	if (response.status !== 204) {
