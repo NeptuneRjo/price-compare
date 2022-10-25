@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest ./dist/__tests__/models ./dist/__tests__/routes"
+		"test": "jest ./dist/__tests__/models ./dist/__tests__/routes",
+		"start": "node ./dist/server.js"
 	},
 	"keywords": [],
 	"author": "",
