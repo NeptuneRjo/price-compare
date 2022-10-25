@@ -3,7 +3,7 @@ import { searchItems } from './pages/Main'
 import { getItems } from './api/getItems'
 import { ItemInterface } from './types'
 
-const MOCK_ITEM: ItemInterface = {
+const MOCK_ITEM = {
 	name: 'Fish',
 	prices: {
 		LA: {
@@ -35,7 +35,7 @@ describe('Main', () => {
 	})
 
 	describe('API', () => {
-		it('fetches the array of items', async () => {
+		it('returns the data as the array of items', async () => {
 			mockFetch({ data: [MOCK_ITEM] })
 
 			const response = await getItems()
