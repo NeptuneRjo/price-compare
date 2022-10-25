@@ -1,7 +1,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import { itemRoutes } from './routes'
-import cfg from './config'
 import { scrapeItems } from './scrapers/scraperUtils'
 import cron from 'node-cron'
 import cors from 'cors'
