@@ -1,0 +1,33 @@
+#main-content {
+    max-height: 100vh;
+    overflow: scroll;
+}
+
+#main-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#main-paginate {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+#main-paginate > ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    list-style: none;
+    gap: 8px;
+    padding: 8px;
+}
+
+li.selected {
+    color: var(--bs-link-color);
+}
